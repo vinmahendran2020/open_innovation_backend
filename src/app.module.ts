@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { DatabaseModule } from './database/database.module';
 import { ConfigModule } from '@nestjs/config';
+import { AirQualityModule } from './air_quality/air_quality.module';
 
 @Module({
   imports: [
@@ -11,7 +12,7 @@ import { ConfigModule } from '@nestjs/config';
     UserModule, 
     ConfigModule.forRoot({
       isGlobal: true,
-    }),
+    }), AirQualityModule,
   ],
   controllers: [AppController],
   providers: [AppService],

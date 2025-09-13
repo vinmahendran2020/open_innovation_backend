@@ -6,8 +6,8 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity('users')
-export class User {
+@Entity('air_quality')
+export class AirQuality {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -18,47 +18,47 @@ export class User {
   updatedAt: Date;
 
   @Column({ type: 'date' })
-  Date: string;
+  date: string;
 
   @Column({ type: 'time' })
-  Time: string;
+  time: string;
 
   @Column('float')
-  CO_GT: number;
+  co_gt: number;
 
   @Column('float')
-  PT08_S1_CO: number;
+  pt08_s1_co: number;
 
   @Column('float')
-  NMHC_GT: number;
+  nmhc_gt: number;
 
   @Column('float')
-  C6H6_GT: number;
+  c6h6_gt: number;
 
   @Column('float')
-  PT08_S2_NMHC: number;
+  pt08_s2_nmhc: number;
 
   @Column('float')
-  NOx_GT: number;
+  nox_gt: number;
 
   @Column('float')
-  PT08_S3_NOx: number;
+  pt08_s3_nox: number;
 
   @Column('float')
-  NO2_GT: number;
+  no2_gt: number;
 
   @Column('float')
-  PT08_S4_NO2: number;
+  pt08_s4_no2: number;
 
   @Column('float')
-  PT08_S5_O3: number;
+  pt08_s5_o3: number;
 
   @Column('float')
-  T: number;
+  t: number;
 
   @Column('float')
-  RH: number;
+  rh: number;
 
   @Column('float')
-  AH: number;
+  ah: number;
 }
