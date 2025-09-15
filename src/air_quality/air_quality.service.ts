@@ -5,6 +5,7 @@ import { AirQualityDto } from './air_quality.dto';
 import csvParser from 'csv-parser';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { IAirQualityQueryDto } from './air_quality-query.dto';
 
 @Injectable()
 export class AirQualityService {
@@ -113,5 +114,59 @@ export class AirQualityService {
       rh: parseFloat(values[13]),
       ah: parseFloat(values[14]),
     } as AirQuality;
+  }
+
+  async findByDataRange(query: IAirQualityQueryDto): Promise<AirQuality[]> {
+    const qb = this.airQualityRepository.createQueryBuilder('aq');
+    if (query.startDate) {
+      qb.andWhere('aq.date >= :startDate', { startDate: query.startDate });
+    }
+    if (query.endDate) {
+      qb.andWhere('aq.date <= :endDate', { endDate: query.endDate });
+    }
+    return await qb.getMany();
+  }
+
+  async findByParameter(
+    query: IAirQualityQueryDto,
+  ): Promise<{ data: AirQuality[]; count: number }> {
+    const qb = this.airQualityRepository.createQueryBuilder('aq');
+
+    let groupExpr: string;
+    switch (query.frequency) {
+      case 'daily':
+        groupExpr = `DATE_TRUNC('day', aq.date)`;
+        break;
+      case 'weekly':
+        groupExpr = `DATE_TRUNC('week', aq.date)`;
+        break;
+      case 'monthly':
+        groupExpr = `DATE_TRUNC('month', aq.date)`;
+        break;
+      case 'yearly':
+        groupExpr = `DATE_TRUNC('year', aq.date)`;
+        break;
+      default:
+        groupExpr = '';
+    }
+    if (groupExpr && query.parameter) {
+      qb.select(`${groupExpr}`, 'parameter')
+        .addSelect(`AVG(aq.${query.parameter})`, 'avgValue')
+        .addSelect(`MIN(aq.${query.parameter})`, 'minValue')
+        .addSelect(`MAX(aq.${query.parameter})`, 'maxValue')
+        .groupBy('parameter')
+        .orderBy('parameter', 'ASC');
+    } else if (query.parameter) {
+      qb.select(`aq.${query.parameter}`);
+    }
+    if (query.startDate) {
+      qb.andWhere(`aq.date >= :startDate`, { startDate: query.startDate });
+    }
+    if (query.endDate) {
+      qb.andWhere(`aq.date <= :endDate`, { endDate: query.endDate });
+    }
+    const data: AirQuality[] = await qb.getRawMany();
+    const count = data.length;
+    return { data, count };
   }
 }

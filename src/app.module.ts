@@ -5,6 +5,8 @@ import { AppService } from './app.service.js';
 import { DatabaseModule } from './database/database.module.js';
 import { MulterModule } from '@nestjs/platform-express';
 import { multerConfig } from './config/multer.config.js';
+import { APP_PIPE } from '@nestjs/core';
+import { ZodValidationPipe } from 'nestjs-zod';
 
 @Module({
   imports: [
@@ -15,6 +17,12 @@ import { multerConfig } from './config/multer.config.js';
     MulterModule.register(multerConfig),
     AirQualityModule,
   ],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_PIPE,
+      useClass: ZodValidationPipe,
+    },
+  ],
 })
 export class AppModule {}

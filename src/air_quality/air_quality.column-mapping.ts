@@ -1,0 +1,17 @@
+export const airQualityColumnMapping: Record<string, string> = {
+  date: 'date',
+  time: 'time',
+  co_gt: 'co_gt',
+  pt08_s1_co: 'pt08_s1_co',
+  nmhc_gt: 'nmhc_gt',
+  c6h6_gt: 'c6h6_gt',
+  pt08_s2_nmhc: 'pt08_s2_nmhc',
+  nox_gt: 'nox_gt',
+  pt08_s3_nox: 'pt08_s3_nox',
+  no2_gt: 'no2_gt',
+  pt08_s4_no2: 'pt08_s4_no2',
+  pt08_s5_o3: 'pt08_s5_o3',
+  t: 'temp',
+  rh: 'rh',
+  ah: 'ah',
+};
