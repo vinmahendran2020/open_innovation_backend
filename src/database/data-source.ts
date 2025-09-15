@@ -1,9 +1,6 @@
 import { DataSource } from 'typeorm';
 import { config as dotenvConfig } from 'dotenv';
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
+import { join } from 'path';
 
 dotenvConfig();
 

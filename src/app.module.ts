@@ -1,20 +1,20 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { UserModule } from './user/user.module';
-import { DatabaseModule } from './database/database.module';
 import { ConfigModule } from '@nestjs/config';
-import { AirQualityModule } from './air_quality/air_quality.module';
+import { AirQualityModule } from './air_quality/air_quality.module.js';
+import { AppService } from './app.service.js';
+import { DatabaseModule } from './database/database.module.js';
+import { MulterModule } from '@nestjs/platform-express';
+import { multerConfig } from './config/multer.config.js';
 
 @Module({
   imports: [
-    DatabaseModule, 
-    UserModule, 
+    DatabaseModule,
     ConfigModule.forRoot({
       isGlobal: true,
-    }), AirQualityModule,
+    }),
+    MulterModule.register(multerConfig),
+    AirQualityModule,
   ],
-  controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}
