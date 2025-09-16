@@ -4,9 +4,11 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  Index,
 } from 'typeorm';
 
 @Entity('air_quality')
+@Index(['date', 'time'])
 export class AirQuality {
   @PrimaryGeneratedColumn()
   id: number;

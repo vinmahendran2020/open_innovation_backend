@@ -149,13 +149,22 @@ export class AirQualityService {
       default:
         groupExpr = '';
     }
-    if (groupExpr && query.parameter) {
-      qb.select(`${groupExpr}`, 'parameter')
-        .addSelect(`AVG(aq.${query.parameter})`, 'avgValue')
-        .addSelect(`MIN(aq.${query.parameter})`, 'minValue')
-        .addSelect(`MAX(aq.${query.parameter})`, 'maxValue')
-        .groupBy('parameter')
-        .orderBy('parameter', 'ASC');
+    if (groupExpr) {
+      qb.select(`${groupExpr}`, 'aq_date')
+        .addSelect(`AVG(aq.co_gt)`, 'aq_co_gt')
+        .addSelect(`AVG(aq.nox_gt)`, 'aq_nox_gt')
+        .addSelect(`AVG(aq.no2_gt)`, 'aq_no2_gt')
+        .addSelect(`AVG(aq.c6h6_gt)`, 'aq_c6h6_gt')
+        .addSelect(`AVG(aq.t)`, 'aq_t')
+        .addSelect(`AVG(aq.rh)`, 'aq_rh')
+        .addSelect(`AVG(aq.ah)`, 'aq_ah')
+        .addSelect(`AVG(aq.pt08_s1_co)`, 'aq_pt08_s1_co')
+        .addSelect(`AVG(aq.pt08_s2_nmhc)`, 'aq_pt08_s2_nmhc')
+        .addSelect(`AVG(aq.pt08_s3_nox)`, 'aq_pt08_s3_nox')
+        .addSelect(`AVG(aq.pt08_s4_no2)`, 'aq_pt08_s4_no2')
+        .addSelect(`AVG(aq.pt08_s5_o3)`, 'aq_pt08_s5_o3')
+        .groupBy('aq_date')
+        .orderBy('aq_date', 'ASC');
     } else if (query.parameter) {
       qb.select(`aq.${query.parameter}`);
     }
@@ -166,6 +175,7 @@ export class AirQualityService {
       qb.andWhere(`aq.date <= :endDate`, { endDate: query.endDate });
     }
     const data: AirQuality[] = await qb.getRawMany();
+    console.log(qb.getSql());
     const count = data.length;
     return { data, count };
   }

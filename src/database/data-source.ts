@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import { DataSource } from 'typeorm';
 import { config as dotenvConfig } from 'dotenv';
 import { join } from 'path';
@@ -11,5 +12,8 @@ export const AppDataSource = new DataSource({
   migrations: [join(__dirname, 'migrations', '*{.ts,.js}')],
   synchronize: false,
   logging: process.env.NODE_ENV === 'development',
-  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+  ssl:
+    process.env.NODE_ENV === 'production'
+      ? { rejectUnauthorized: false }
+      : false,
 });

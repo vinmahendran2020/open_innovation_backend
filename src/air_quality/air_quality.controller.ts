@@ -6,6 +6,7 @@ import {
   UsePipes,
   Get,
   Query,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AirQualityService } from './air_quality.service';
@@ -25,8 +26,15 @@ export class AirQualityController {
   @UseInterceptors(FileInterceptor('file', multerConfig))
   @UsePipes(FilevalidationPipe)
   async upload(@UploadedFile() file: Express.Multer.File) {
-    const result = await this.airQualityService.uploadFileStream(file.path);
-    return { message: 'Air quality data uploaded', ...result };
+    try {
+      const result = await this.airQualityService.uploadFileStream(file.path);
+      return { message: 'Air quality data uploaded', ...result };
+    } catch (error) {
+      console.error('Upload failed:', error);
+      throw new InternalServerErrorException(
+        'Failed to upload air quality data',
+      );
+    }
   }
 
   @Get('all')
