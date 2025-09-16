@@ -24,10 +24,16 @@ cp .env.example .env
 Update `.env` with your database configuration:
 - Set `DBURL` to your PostgreSQL instance URL from https://neon.com/ or local PostgreSQL connection string
 
+### Database Setup
+
+```bash
+npm run migration:generate
+npm run migration:run
+```
+
 ### Start Service
 
 ```bash
-# Development
 npm run start:dev
 ```
 
